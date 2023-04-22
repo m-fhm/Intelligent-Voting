@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Party List</h1>
+  <a href="{% url 'party_create' %}" class="btn btn-primary">Add Party</a>
+  <br><br>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Short Name</th>
+        <th>Long Name</th>
+        <th>Description</th>
+        <th>Logo</th>
+        <th>Candidate</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for party in parties %}
+        <tr>
+          <td>{{ party.name }}</td>
+          <td>{{ party.full_name }}</td>
+          <td>{{ party.description }}</td>
+          <td><img src="{{ party.logo.url }}" width="50" height="50"></td>
+          <td>{{ party.candidate.first_name }} {{ party.candidate.last_name }}</td>
+          <td>
+            <a href="{% url 'party_update' party.id %}" class="btn btn-info">Edit</a>
+            <a href="{% url 'party_delete' party.id %}" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6">No parties found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

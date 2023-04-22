@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Update Party</h1>
+  <br>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="{{ form.name.id_for_label }}">Short Name:</label>
+      {{ form.name }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.full_name.id_for_label }}">Full Name:</label>
+      {{ form.full_name }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.description.id_for_label }}">Description:</label>
+      {{ form.description }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.logo.id_for_label }}">Logo:</label>
+      {{ form.logo }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.candidate.id_for_label }}">Candidate:</label>
+      {{ form.candidate }}
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a href="{% url 'party_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

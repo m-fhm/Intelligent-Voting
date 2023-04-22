@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Voter List</h1>
+  <a href="{% url 'voter_create' %}" class="btn btn-primary">Add Voter</a>
+  <br><br>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>EPIC</th>
+        <th>Aadhar</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Date of Birth</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for voter in voters %}
+        <tr>
+          <td>{{ voter.epic }}</td>
+          <td>{{ voter.aadhar }}</td>
+          <td>{{ voter.first_name }}</td>
+          <td>{{ voter.last_name }}</td>
+          <td>{{ voter.dob }}</td>
+          <td>{{ voter.email }}</td>
+          <td>
+            <a href="{% url 'voter_update' voter.epic %}" class="btn btn-info">Edit</a>
+            <a href="{% url 'voter_delete' voter.epic %}" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="7">No voters found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
