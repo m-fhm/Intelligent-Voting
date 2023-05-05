@@ -6,28 +6,35 @@ import os
 import glob
 
 
+# Define variables for storing face encodings and names
 faces_encodings = []
 faces_names = []
+
+# Get current working directory and path to 'faces' folder
 cur_direc = os.getcwd()
-path = os.path.join(cur_direc, os.path.join(os.getcwd(), 'faces'))
+path = os.path.join(cur_direc, 'faces')
 
-list_of_files = [f for f in glob.glob(path+'*.jpg')]
+# Get a list of all image files in 'faces' folder
+list_of_files = [f for f in glob.glob(os.path.join(path, '*')) if os.path.isfile(f) and f.lower().endswith(('.jpg', '.jpeg', '.png'))]
 
-number_files = len(list_of_files)
-names = list_of_files.copy()
+# Loop over image files and encode faces
+for i, file_path in enumerate(list_of_files):
+    # Load image file
+    image = face_recognition.load_image_file(file_path)
+    
+    # Encode face in image
+    face_encoding = face_recognition.face_encodings(image)[0]
+    faces_encodings.append(face_encoding)
 
-for i in range(number_files):
-    globals()['image_{}'.format(i)] = face_recognition.load_image_file(list_of_files[i])
-    globals()['image_encoding_{}'.format(i)] = face_recognition.face_encodings(globals()['image_{}'.format(i)])[0]
-    faces_encodings.append(globals()['image_encoding_{}'.format(i)])
+    # Extract name from file path and append to list
+    file_name = os.path.basename(file_path)
+    name = os.path.splitext(file_name)[0]
+    faces_names.append(name)
 
-    names[i] = names[i].replace(path, "")
-    names[i] = names[i].replace(".jpg", "")
-    faces_names.append(names[i])
+# Save face encodings to file using pickle
+with open('dataset_faces.dat', 'wb') as f:
+    pickle.dump(faces_encodings, f)
 
-with open('dataset_faces.dat','wb') as f:
-    pickle.dump(faces_encodings,f)
-
-with open('name_faces.dat','wb') as f:
-    pickle.dump(faces_names,f)
-
+# Save face names to file using pickle
+with open('name_faces.dat', 'wb') as f:
+    pickle.dump(faces_names, f)

@@ -5,7 +5,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('detect_face/',include('detect_face.urls'), name = 'detect_face'),
     path('', views.start, name = 'start'),
-    # path('dbg/',views.dbg, name = 'dbg'),
+    path('dbg/',views.dbg, name = 'dbg'),
     path('detect_person/', include('detect_person.urls'), name = 'detect_person'),
     path('detect_mask/', include('detect_mask.urls'), name = 'detect_mask'),
     path('recognize_face/', include('recognize_face.urls'), name = 'recognize_face'),
