@@ -4,10 +4,10 @@ from django.forms import ValidationError
 
 class Voter(models.Model):
     class Meta:
-        unique_together = (('epic', 'aadhar'),)
+        unique_together = (('cnic', 'family_no'),)
 
-    epic = models.CharField(max_length=10, primary_key=True)
-    aadhar = models.CharField(max_length=12)
+    cnic = models.CharField(max_length=15, primary_key=True)
+    family_no = models.CharField(max_length=12)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     dob = models.DateField()
@@ -17,7 +17,7 @@ class Voter(models.Model):
         return f'{self.first_name}, {self.last_name}'
 
     def __str__(self):
-        return f'{self.epic} - {self.first_name}'
+        return f'{self.cnic} - {self.first_name}'
 
 
 # class Party(models.Model):
@@ -32,7 +32,7 @@ class Party(models.Model):
     name = models.CharField(max_length=10, default="test") # short name
     full_name = models.CharField(max_length=50, default="test") # long name
     description = models.CharField(max_length=255,default="test") # description of party platform or ideology
-    logo = models.ImageField(upload_to='party_logos/',default="test") # file field to store party logo or symbol
+    logo = models.ImageField(upload_to='party_logos/') # file field to store party logo or symbol
     candidate = models.OneToOneField(Voter, on_delete=models.CASCADE)
 
     def __str__(self):

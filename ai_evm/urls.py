@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path,include
 from . import views 
@@ -15,13 +17,12 @@ urlpatterns = [
     path('voter_create/', views.voter_create, name='voter_create'),
     path('<str:pk>/update/', views.voter_update, name='voter_update'),
     path('<str:pk>/delete/', views.voter_delete, name='voter_delete'),
-
+   
     path('parties/', views.party_list, name='party_list'),
     path('party_create/', views.party_create, name='party_create'),
     path('update/<int:pk>/', views.party_update, name='party_update'),
     path('delete/<int:pk>/', views.party_delete, name='party_delete'),
-]
-
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 

@@ -153,7 +153,8 @@ def voter_create(request):
         form = VoterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('voter_list')
+            return HttpResponse("done")
+            # return redirect('voter_list')
     else:
         form = VoterForm()
     return render(request, 'voters/add_voter.html', {'form': form})

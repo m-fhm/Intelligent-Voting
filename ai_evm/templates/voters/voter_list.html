@@ -19,15 +19,15 @@
     <tbody>
       {% for voter in voters %}
         <tr>
-          <td>{{ voter.epic }}</td>
-          <td>{{ voter.aadhar }}</td>
+          <td>{{ voter.cnic }}</td>
+          <td>{{ voter.family_no }}</td>
           <td>{{ voter.first_name }}</td>
           <td>{{ voter.last_name }}</td>
           <td>{{ voter.dob }}</td>
           <td>{{ voter.email }}</td>
           <td>
-            <a href="{% url 'voter_update' voter.epic %}" class="btn btn-info">Edit</a>
-            <a href="{% url 'voter_delete' voter.epic %}" class="btn btn-danger">Delete</a>
+            <a href="{% url 'voter_update' voter.cnic %}" class="btn btn-info">Edit</a>
+            <a href="{% url 'voter_delete' voter.cnic %}" class="btn btn-danger">Delete</a>
           </td>
         </tr>
       {% empty %}

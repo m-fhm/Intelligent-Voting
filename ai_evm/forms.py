@@ -6,8 +6,8 @@ class VoterForm(forms.ModelForm):
         model = Voter
         fields = '__all__'
         widgets = {
-            'epic': forms.TextInput(attrs={'class': 'form-control'}),
-            'aadhar': forms.TextInput(attrs={'class': 'form-control'}),
+            'cnic': forms.TextInput(attrs={'class': 'form-control'}),
+            'family_no': forms.TextInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'dob': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
