@@ -10,7 +10,8 @@
         <th>CNIC</th>
         <th>Family No.</th>
         <th>First Name</th>
-        <th>Last Name</th>
+        <th>Statistical Block Code</th>
+        <th>Series Number</th>
         <th>Date of Birth</th>
         <th>Email</th>
         <th>Actions</th>
@@ -22,7 +23,8 @@
           <td>{{ voter.cnic }}</td>
           <td>{{ voter.family_no }}</td>
           <td>{{ voter.first_name }}</td>
-          <td>{{ voter.last_name }}</td>
+          <td>{{voter.statical_lock_code}}</td>
+          <td>{{ voter.series_number }}</td>
           <td>{{ voter.dob }}</td>
           <td>{{ voter.email }}</td>
           <td>
@@ -32,9 +34,17 @@
         </tr>
       {% empty %}
         <tr>
-          <td colspan="7">No voters found.</td>
+          <td colspan="9">No voters found.</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 {% endblock %}
+
+
+
+
+
+
+
+

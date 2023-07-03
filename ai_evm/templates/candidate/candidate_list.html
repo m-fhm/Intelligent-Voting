@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Candidate List</h1>
+  <a href="{% url 'candidate_create' %}" class="btn btn-primary">Add Candidate</a>
+  <br><br>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>CNIC</th>
+        <th>Full Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for candidate in candidates %}
+        <tr>
+          <td>{{ candidate.voter.cnic }}</td>
+          <td>{{ candidate }}</td>
+          <td>
+            <a href="{% url 'candidate_update' candidate.voter.cnic %}" class="btn btn-info">Edit</a>
+            <a href="{% url 'candidate_delete' candidate.voter.cnic %}" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">No candidates found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

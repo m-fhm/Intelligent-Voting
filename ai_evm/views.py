@@ -3,10 +3,11 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.conf import settings 
 from django.core.mail import EmailMessage 
+from django.db.models import Count
 from threading import Thread
 from mailjet_rest import Client
-from .models import Voter, Party, Vote
-from .forms import VoterForm, PartyForm
+from .models import Voter, Party, Vote, Candidate
+from .forms import VoterForm, PartyForm, CandidateForm
 
 
 
@@ -18,7 +19,15 @@ from .forms import VoterForm, PartyForm
 '''
 
 # fetch only firstnames for face recognition phase
-names = Voter.objects.values_list('first_name', flat=True)
+cnic = Voter.objects.values_list('cnic', flat=True)
+
+def index(request):
+    return render(request, 'ore.html')
+
+def refresh(request):
+    request.session.flush()
+    request.method = 'GET'
+    return redirect('start')
 
 
 def init_session(request):
@@ -70,7 +79,7 @@ def start(request):
             request.session['face_name'] = FACE_NAME
             print('FACE_NAME:', FACE_NAME)
 
-            if FACE_NAME in names:
+            if FACE_NAME in cnic:
                 # mark as complete & move to phase_4 (voting)
                 messages.success(request, 'Face Recognition Phase completed')
                 request.session['phase_3'] = True
@@ -83,7 +92,7 @@ def start(request):
 
         elif not request.session['phase_4']:
             voted_to = Party.objects.get(name=request.POST['voted_to'])
-            voter = Voter.objects.get(first_name=request.session['face_name'])
+            voter = Voter.objects.get(cnic=request.session['face_name'])
             Vote(voter=voter, voted_to=voted_to).save()
             Thread(target= success, args=(voter, voted_to.full_name)).start()
             # return JsonResponse(dict(request.POST))
@@ -103,7 +112,7 @@ def start(request):
         if not request.session['phase_3']:
             return render(request, 'index.html', context = {'stream': 'recognize_face'})
         if not request.session['phase_4']:
-            if len(Vote.objects.filter(voter__first_name=request.session['face_name'])) > 0:
+            if len(Vote.objects.filter(voter__cnic=request.session['face_name'])) > 0:
                 messages.error(request, 'Sorry, You have already voted!')
                 request.session.flush()
                 request.method = 'GET'
@@ -153,8 +162,7 @@ def voter_create(request):
         form = VoterForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse("done")
-            # return redirect('voter_list')
+            return redirect('voter_list')
     else:
         form = VoterForm()
     return render(request, 'voters/add_voter.html', {'form': form})
@@ -213,3 +221,49 @@ def party_delete(request, pk):
     party = get_object_or_404(Party, pk=pk)
     party.delete()
     return redirect('party_list')
+
+#--------Candidate CURD
+#---------------
+
+def candidate_list(request):
+    candidates = Candidate.objects.all()
+    return render(request, 'candidate/candidate_list.html', {'candidates': candidates})
+
+def candidate_create(request):
+    if request.method == 'POST':
+        form = CandidateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('candidate_list')
+    else:
+        form = CandidateForm()
+    return render(request, 'candidate/candidate_form.html', {'form': form})
+
+def candidate_update(request, cnic):
+    candidate = get_object_or_404(Candidate, voter__cnic=cnic)
+    if request.method == 'POST':
+        form = CandidateForm(request.POST, instance=candidate)
+        if form.is_valid():
+            form.save()
+            return redirect('candidate_list')
+    else:
+        form = CandidateForm(instance=candidate)
+    return render(request, 'candidate/candidate_form.html', {'form': form, 'candidate': candidate})
+
+def candidate_delete(request, cnic):
+    candidate = get_object_or_404(Candidate, voter__cnic=cnic)
+    if request.method == 'POST':
+        candidate.delete()
+        return redirect('candidate_list')
+    return render(request, 'candidate/candidate_confirm_delete.html', {'candidate': candidate})
+
+# vote counter each party 
+def party_votes_view(request):
+    # Query to count the total votes for each party
+    party_votes = Party.objects.annotate(total_votes=Count('votes'))
+
+    context = {
+        'party_votes': party_votes
+    }
+
+    return render(request, 'voters/vote_count.html', context)

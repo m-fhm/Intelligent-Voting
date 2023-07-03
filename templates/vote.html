@@ -48,11 +48,13 @@
             <th></th>
             <th>Name</th>
             <th>Icon</th>
+            <th>Candidate</th>
             {% for party in pts %}
             <tr class="candidate">
                 <td><input type="radio" name="voted_to" id="{{ party.name }}" value="{{ party.name }}"></td>
                 <td><label for="{{ party.name }}">{{ party.full_name }}</label></td>
-                <td><label for="{{ party.name }}"><img src="{% static 'img/' %}{{party.name|lower}}.png" height="50" width="70"></label></td>
+                <td><img src="{{ MEDIA_URL }}{{ party.logo.url }}" width="70" height="50"></td>
+                <td>{{ party.candidate.voter.first_name }}</td>
             </tr>
             {% endfor %}
         </table>

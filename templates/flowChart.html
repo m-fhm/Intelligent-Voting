@@ -13,6 +13,18 @@
             margin-left: 50%;
         }
         
+        .btn-f {
+            margin: 20px;
+            text-align: center;
+            font-size: 16px;
+            background-color: #dc3545;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            border-radius: 6px;
+            width: 100%;
+        }
+        
         .btn {
             margin: 20px;
             text-align: center;
@@ -40,6 +52,10 @@
 
 <body>
     <div>
+        <form action="{% url 'refresh' %}" method="GET">
+            <button type="submit" class="btn-f"  name="restart">Refresh</button>
+        </form>
+
         {% if not request.session.phase_1 %}
         <button class="btn">Person Detection</button> {% else %}
         <button class="btn led-green" style="background-color:green !important">Person Detection</button> {% endif %}

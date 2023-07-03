@@ -41,6 +41,15 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="registerDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Candidate
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="registerDropdown">
+                            <a class="dropdown-item" href="{% url 'candidate_list' %}">Party Candidate</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'voter_list' %}" id="registerDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Voters
@@ -49,6 +58,9 @@
                             <a class="dropdown-item" href="{% url 'voter_create' %}">Add Voter</a>
                             <a class="dropdown-item" href="{% url 'voter_list' %}">Voters List</a>
                         </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'vote_count' %}">Vote Count</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">

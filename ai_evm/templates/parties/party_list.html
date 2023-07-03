@@ -22,8 +22,7 @@
           <td>{{ party.full_name }}</td>
           <td>{{ party.description }}</td>
           <td><img src="{{ MEDIA_URL }}{{ party.logo.url }}" width="50" height="50"></td>
-          
-          <td>{{ party.candidate.first_name }} {{ party.candidate.last_name }}</td>
+          <td>{{ party.candidate.voter.cnic }}</td>
           <td>
             <a href="{% url 'party_update' party.id %}" class="btn btn-info">Edit</a>
             <a href="{% url 'party_delete' party.id %}" class="btn btn-danger">Delete</a>

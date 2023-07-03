@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Party Votes</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Party Name</th>
+        <th>Total Votes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for party_vote in party_votes %}
+      <tr>
+        <td>{{ party_vote.name }}</td>
+        <td>{{ party_vote.total_votes }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="2">No party votes found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
